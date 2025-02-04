@@ -1,0 +1,14 @@
+Lieve gebruiker,
+
+Met een warm hart willen wij u laten weten dat u met succes bent ingelogd op uw account. Hieronder vindt u de details van deze login:
+
+Datum en Tijd: {{ loginDate }}
+IP-adres: {{ ipAddress }}
+Locatie: {{ location }}
+
+Mocht u deze activiteit niet herkennen, laat het ons dan alstublieft direct weten via valentijnhackathon@tomtiedemann.com. Uw veiligheid ligt ons immers nauw aan het hart.
+
+Wij waarderen uw vertrouwen in onze diensten en wensen u een liefdevolle dag toe.
+
+Met hartelijke Valentijnsgroet,
+Team Valentijn Hackathon

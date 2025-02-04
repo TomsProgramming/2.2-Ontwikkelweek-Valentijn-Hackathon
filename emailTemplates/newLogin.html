@@ -1,0 +1,99 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Valentijns Login Bevestiging</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffe6e6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ffccd5;
+            border-radius: 10px;
+            background-color: #fff0f6;
+        }
+        .header {
+            background: linear-gradient(45deg, #ff6699, #ff99cc);
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            margin: 20px 0;
+            padding: 0 20px;
+            color: #333333;
+        }
+        .details {
+            background-color: #ffe6f2;
+            padding: 15px;
+            border: 1px solid #ffccd5;
+            border-radius: 5px;
+        }
+        .details ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .details li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        .details li:before {
+            content: "❤️";
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        .footer {
+            background-color: #ffe6f2;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #cc3366;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+        .footer a {
+            color: #cc3366;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💖 Bevestiging van Succesvolle Login 💖</h1>
+        </div>
+        <div class="content">
+            <p>Lieve gebruiker,</p>
+            <p>We willen u informeren dat er met succes is ingelogd op uw account. Hieronder vindt u de details van deze login:</p>
+            <div class="details">
+                <ul>
+                    <li><strong>Datum en Tijd:</strong> {{ loginDate }}</li>
+                    <li><strong>IP-adres:</strong> {{ ipAddress }}</li>
+                    <li><strong>Locatie:</strong> {{ location }}</li>
+                </ul>
+            </div>
+            <p>Als u deze activiteit niet herkent, verzoeken wij u onmiddellijk contact met ons op te nemen via <a href="mailto:valentijnhackathon@tomtiedemann.com">valentijnhackathon@tomtiedemann.com</a>.</p>
+            <p>Wij waarderen uw vertrouwen in onze diensten.</p>
+            <p>Met liefdevolle groet,<br>Team Valentijn Hackathon</p>
+        </div>
+        <div class="footer">
+            <p>&copy; {{ yearDate }} Valentijn Hackathon. Alle rechten voorbehouden.</p>
+            <p>Bezoek ons op <a href="https://valentijnhackathon.tomtiedemann.com/">ValentijnHackathon.com</a></p>
+            <p><a href="mailto:valentijnhackathon@tomtiedemann.com">valentijnhackathon@tomtiedemann.com</a></p>
+        </div>
+    </div>
+</body>
+</html>

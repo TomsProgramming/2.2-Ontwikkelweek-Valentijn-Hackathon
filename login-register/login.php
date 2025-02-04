@@ -1,6 +1,9 @@
 <?php
 require '../config.php';
 
+if($loggedIn){
+    echo '<script>window.location.href = "../index.php";</script>';
+}
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -16,7 +19,7 @@ require '../config.php';
             <h2 id="form-title">Login</h2>
             <form id="auth-form">
                 <div class="input-group">
-                    <input type="text" id="username" placeholder="Gebruikersnaam" required>
+                    <input type="text" id="username" placeholder="Gebruikersnaam of Email" required>
                 </div>
                 <div class="input-group">
                     <input type="password" id="password" placeholder="Wachtwoord" required>
@@ -27,7 +30,7 @@ require '../config.php';
         </div>
     </div>
     <div class="notification"></div>
-    <script src="assets/js/notification.js"></script>
-    <script src="assets/js/login.js"></script>
+    <script src="assets/js/notification.js?v=<?php echo filemtime('assets/js/notification.js') ?>"></script>
+    <script src="assets/js/login.js?v=<?php echo filemtime('assets/js/login.js') ?>"></script>
 </body>
 </html>

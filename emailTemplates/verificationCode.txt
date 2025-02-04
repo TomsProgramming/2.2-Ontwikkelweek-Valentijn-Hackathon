@@ -1,0 +1,10 @@
+Lieve,
+
+Met een warm hart sturen wij u uw 2FA verificatiecode: {{ code }}
+
+Deze code blijft geldig tot {{ expireDate }}. Bewaar hem als een kostbaar symbool van vertrouwen en veiligheid – net zoals we de liefde koesteren.
+
+Mocht u deze code niet hebben aangevraagd, beschouw dan deze liefdesboodschap als een vriendelijke knipoog en negeer hem, of neem gerust contact met ons op via valentijnhackathon@tomtiedemann.com.
+
+Met hartelijke Valentijnsgroeten,
+Team Valentijn Hackathon

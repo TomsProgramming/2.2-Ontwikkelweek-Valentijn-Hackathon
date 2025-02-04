@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
             body: JSON.stringify({
                 function: "login",
                 username: document.querySelector("#auth-form #username").value,
-                password: document.querySelector("#auth-form #password").value
+                password: document.querySelector("#auth-form #password").value,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
             })
         })
         .then(response => {
