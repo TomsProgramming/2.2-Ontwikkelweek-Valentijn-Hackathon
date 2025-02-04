@@ -12,10 +12,10 @@ if ($selectEmails->rowCount() > 0) {
         $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();
-            $mail->Host       = 'shared135.cloud86-host.io';
+            $mail->Host       = '';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'valentijnhackathon@tomtiedemann.com';
-            $mail->Password   = 'QBJ2mcf*vme*ydn6tyd';
+            $mail->Username   = '';
+            $mail->Password   = '';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 

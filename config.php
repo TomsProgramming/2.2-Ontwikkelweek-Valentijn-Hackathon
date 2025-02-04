@@ -17,7 +17,7 @@ $deviceData = [];
 $ipAdress = '';
 
 try {
-    $conn = new PDO("mysql:host=localhost;dbname=valentijnhackathon", "tom", "ytz.HMW_pvn!yqv8kpr");
+    $conn = new PDO("mysql:host=localhost;dbname=", "", "");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
