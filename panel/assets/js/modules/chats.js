@@ -45,6 +45,7 @@ export async function sendMessage(message){
         return;
     }
     websocket.sendMessage(message, currentChatUserId);
+
     const chatContainer = document.querySelector('.chat-container .messages');
     const messageElement = document.createElement('div');
     messageElement.classList.add('message');
@@ -60,9 +61,7 @@ export async function sendMessage(message){
 
 export async function addMessage(senderId, message){
     await loadDefaultFunctions();
-    console.log("dwaddwawda");
     if(parseInt(senderId) === parseInt(currentChatUserId)){
-        console.log("dwaddwawddwadwadawwda");
         const chatContainer = document.querySelector('.chat-container .messages');
         const messageElement = document.createElement('div');
         messageElement.classList.add('message');

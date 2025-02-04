@@ -36,7 +36,43 @@ $contacts = $contactsList->fetchAll();
             $contactData->bindParam(':id', $contact['contactId']);
             $contactData->execute();
             $contactData = $contactData->fetch();
-            echo '<div class="chat-item" onclick="contacts.onClickContact(this)" data-id="'.$contactData['id'].'" data-username="'.$contactData['username'].'">'.$contactData['username'].'</div>';
+
+            $selectUnreadedMessages = $conn->prepare("SELECT id FROM messages WHERE senderId = :senderId AND receiverId = :receiverId AND readed = 0");
+            $selectUnreadedMessages->bindParam(':senderId', $contactData['id']);
+            $selectUnreadedMessages->bindParam(':receiverId', $userData['id']);
+            $selectUnreadedMessages->execute();
+            $unreadedMessages = $selectUnreadedMessages->rowCount();
+
+            $lastMessage = $conn->prepare("SELECT id, message, createdAt FROM messages WHERE (senderId = :senderId AND receiverId = :receiverId) OR (senderId = :receiverId AND receiverId = :senderId) ORDER BY createdAt DESC LIMIT 1");
+            $lastMessage->bindParam(':senderId', $contactData['id']);
+            $lastMessage->bindParam(':receiverId', $userData['id']);
+            $lastMessage->execute();
+            $lastMessage = $lastMessage->fetch();
+
+            if(!empty($lastMessage['createdAt'])){
+              $utcTime = new DateTime($lastMessage['createdAt'], new DateTimeZone('UTC'));
+              $userTime = $utcTime->setTimezone(new DateTimeZone($deviceData['timezone']));
+              $currentTime = $userTime->format('Y-m-d H:i:s');
+              $lastMessage['createdAt'] = $currentTime;
+            }
+
+            echo '<div class="chat-item" onclick="contacts.onClickContact(this)" data-id="' . $contactData['id'] . '" data-username="' . $contactData['username'] . '">
+            <div class="header">
+                <img src="../uploads/profilePictures/' . $contactData['id'] . '.png" alt="Profiel" class="avatar">
+                <span class="username">' . $contactData['username'] . '</span>';
+                if ($unreadedMessages > 0) {
+                    echo '<span class="unreadedMessages">' . $unreadedMessages . '</span>';
+                }
+
+                echo '  </div>
+                        <div class="content">
+                            <span class="last-message">' . (!empty($lastMessage['message']) ? $lastMessage['message'] : '') . '</span>
+                        </div>
+                        <div class="footer">
+                            <span class="last-message-time">' . (!empty($lastMessage['createdAt']) ? $lastMessage['createdAt'] : '') . '</span>
+                        </div>
+                      </div>';
+
         }
         ?>
       </div>

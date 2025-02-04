@@ -61,6 +61,48 @@ body {
     background: #ffd6da;
 }
 
+.chat-item .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;  
+}
+
+.chat-item .avatar {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+
+.chat-item .username {
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.chat-item .content {
+  flex: 1;           
+  min-width: 0;
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-item .last-message,
+.chat-item .last-message-time {
+    font-size: 15px;
+    color: #808080;
+}
+
+.chat-item .unreadedMessages {
+    margin-left: auto;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: #d6336c;
+    color: #ffffff;
+    font-weight: bold;
+}
+
 .sidebar-buttons {
     display: flex;
     justify-content: space-between;
