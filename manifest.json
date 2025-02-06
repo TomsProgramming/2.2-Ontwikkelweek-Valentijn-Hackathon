@@ -1,0 +1,8 @@
+{
+    "name": "Valentijn Hackathon",
+    "short_name": "Valentijn Hackathon",
+    "theme_color": "#F7859B",
+    "background_color": "#ff4f30",
+    "display": "standalone",
+    "start_url": "/"
+}

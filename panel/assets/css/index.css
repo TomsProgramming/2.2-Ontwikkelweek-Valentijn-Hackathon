@@ -1,0 +1,333 @@
+@import url('headNav.css?v=1.0.1');
+
+body {
+    background: linear-gradient(135deg, #f78ca0, #f9748f, #fd868c, #fe9a8b);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.love-tester-wrapper {
+    margin-top: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 70px);
+    width: 100%;
+}
+
+.love-tester-container {
+    background-color: #fff;
+    width: 95%;
+    max-width: 600px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+.love-tester-container h2 {
+    color: #d6336c;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.love-tester-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.love-tester-form input {
+    padding: 15px;
+    font-size: 1rem;
+    border: 2px solid #d6336c;
+    border-radius: 25px;
+    outline: none;
+}
+
+.love-tester-form button {
+    border: none;
+    background: #d6336c;
+    color: #fff;
+    font-size: 1rem;
+    padding: 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.love-tester-form button:hover {
+    background: #bf2952;
+}
+
+.heart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.heart-container .heartSvg{
+    width: 300px;
+}
+
+.heart-container .percentageText {
+    text-anchor: middle;
+    dominant-baseline: middle;
+    fill: #ffff;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.heart-container #clipRect {
+    transition: y 1s ease, height 1s ease;
+}
+
+.result-info {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.no-result {
+    color: #808080;
+    text-align: center;
+}
+
+.history-container {
+    background-color: #ffe6e6;
+    border: 1px solid #fbb6ce;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.history-container h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #d6336c;
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+.history-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.history-list li {
+    background: #fff;
+    border: 1px solid #fbb6ce;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.history-list li span {
+    flex: 1;
+    color: #333;
+}
+
+.share-button,
+.clear-history {
+    border: none;
+    background: #d6336c;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 0.9rem;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.share-button:hover,
+.clear-history:hover {
+    background: #bf2952;
+}
+
+.no-history {
+    color: #808080;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .love-tester-container {
+        width: 90%;
+        margin-top: 20px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.share-menu {
+    display: none; 
+    position: fixed;
+    z-index: 9999;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff0f5;
+    border: 2px solid #d6336c;
+    border-radius: 15px;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+}
+
+.share-menu.show {
+    display: block;
+}
+
+.share-menu-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.share-menu-content h3 {
+    margin: 0;
+    color: #d6336c;
+}
+
+#shareInfoText {
+    color: #333;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.chat-list {
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-item-share {
+    display: flex;
+    align-items: center;
+    background: #ffe6e6;
+    padding: 10px;
+    border: 1px solid #fbb6ce;
+    border-radius: 8px;
+    gap: 10px;
+}
+
+.chat-item-share .avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.chat-item-share .chat-username {
+    flex: 1;
+    font-weight: 600;
+}
+
+.chat-item-share button {
+    background: #d6336c;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.chat-item-share button:hover {
+    background: #bf2952;
+}
+
+.close-menu {
+    background: #ff4444;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 14px;
+    cursor: pointer;
+}
+
+.close-menu:hover {
+    background: #cc0000;
+}
+
+.share-menu-overlay {
+    display: none;
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.share-menu-overlay.show {
+    display: block;
+}
+
+.share-buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.share-buttons-container button {
+    padding: 10px 20px;
+    background: #d6336c;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.share-buttons-container button:hover {
+    background: #bf2952;
+}

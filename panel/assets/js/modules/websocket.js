@@ -1,36 +1,67 @@
-let socket;
+let socket = null;
 
 function getCookie(name) {
     let value = "; " + document.cookie;
     let parts = value.split("; " + name + "=");
     if (parts.length === 2) return parts.pop().split(";").shift();
+    return null;
 }
 
-let token = getCookie('token');
+const token = getCookie('token');
 
-socket = new WebSocket('wss://valentijnhackathonwebsocket.tomtiedemann.com');
+function connectWithWebsocket() {
+    if (socket && (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING)) {
+        return;
+    }
 
-socket.addEventListener('open', () => {
-   socket.send(JSON.stringify({ function: 'connect', token: token }));
+    socket = new WebSocket('wss://valentijnhackathonwebsocket.tomtiedemann.com');
+
+    socket.addEventListener('open', () => {
+        socket.send(JSON.stringify({
+            function: 'connect',
+            token: token
+        }));
+    });
+
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        if (data.function === 'connected') {
+        }
+
+        if (data.function === 'notification' && data.type && data.message) {
+            notifications.show(data.message, data.type);
+        }
+
+        if (data.function === 'message' && data.from && data.message) {
+            console.log('new message:', data);
+            chats.addMessage(data.from, data.message);
+        }
+    });
+
+    socket.addEventListener('close', () => {
+        setTimeout(connectWithWebsocket, 1000);
+    });
+
+    socket.addEventListener('error', (error) => {
+        console.error('WebSocket fout:', error);
+    });
+}
+
+connectWithWebsocket();
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        connectWithWebsocket();
+    }
 });
-
-socket.addEventListener("message", (event) => {
-    const data = JSON.parse(event.data);
-    console.log(data);
-    if(data.function === 'connected'){
-        console.log('Connected to websocket server');
+export function sendMessage(message, to) {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({
+            function: 'sendMessage',
+            message: message,
+            to: to
+        }));
+    } else {
+        console.warn('WebSocket is niet open. Bericht niet verzonden:', message);
     }
-
-    if(data.function === 'notification' && data.type && data.message){
-        notifications.show(data.message, data.type);
-    }
-
-    if(data.function === 'newMessage' && data.message && data.from){
-        console.log(data);
-        chats.addMessage(data.from, data.message);
-    }
-});
-
-export function sendMessage(message, to){
-    socket.send(JSON.stringify({ function: 'sendMessage', message: message, to: to }));
 }

@@ -1,7 +1,7 @@
 <?php
 class users
 {
-    static function addContact($username)
+    static function validUsernameCheck($username)
     {
         global $conn, $userData;
 
@@ -15,17 +15,44 @@ class users
 
         if($usernameCheck->rowCount() > 0){
             $contactData = $usernameCheck->fetch();
-            $currentTime = date('Y-m-d H:i:s');
 
-            $addContact = $conn->prepare("INSERT INTO contacts (userId, contactId, createdAt) VALUES (:userId, :contactId, :createdAt)");
-            $addContact->bindParam(':userId', $userData['id']);
-            $addContact->bindParam(':contactId', $contactData['id']);
-            $addContact->bindParam(':createdAt', $currentTime);
-            $addContact->execute();
+            $chatNotifications = chats::getChatNotifications($contactData['id']);
+            $lastMessage = chats::getLastChatMessage($contactData['id']);
 
-            return json_encode(array("success" => true, "contactId" => $contactData['id']));
+            return json_encode(array("success" => true, "contactId" => $contactData['id'], "chatNotifications" => $chatNotifications, "lastMessage" => $lastMessage));
         }else{
             return json_encode(array("success" => false, "error" => "Gebruiker niet gevonden"));
+        }
+    }
+
+    static function updateNotificationData($set, $data)
+    {
+        global $conn, $deviceData;
+
+        if($set === true){
+            $endpoint = $data['endpoint'];
+            $p256dh = $data['keys']['p256dh'];
+            $auth = $data['keys']['auth'];
+
+            $updateNotification = $conn->prepare("UPDATE devices SET endpoint = :endpoint, p256dh = :p256dh, auth = :auth WHERE id = :deviceId");
+            $updateNotification->bindParam(':endpoint', $endpoint);
+            $updateNotification->bindParam(':p256dh', $p256dh);
+            $updateNotification->bindParam(':auth', $auth);
+            $updateNotification->bindParam(':deviceId', $deviceData['id']);
+            
+            if($updateNotification->execute()){
+                return json_encode(array("success" => true));
+            }else{
+                return json_encode(array("success" => false, "error" => "Er is iets fout gegaan", "phpError" => $updateNotification->errorInfo()));
+            }
+
+            return json_encode(array("success" => true));
+        }else{
+            $updateNotification = $conn->prepare("UPDATE devices SET endpoint = NULL, p256dh = NULL, auth = NULL WHERE id = :deviceId");
+            $updateNotification->bindParam(':deviceId', $deviceData['id']);
+            $updateNotification->execute();
+
+            return json_encode(array("success" => true));
         }
     }
 }

@@ -3,113 +3,128 @@ require '../config.php';
 
 if(!$loggedIn){
     echo '<script>window.location.href = "../login-register/login.php";</script>';
+    exit;
 }
 
 if($deviceData['emailVerified'] == 0){
     echo '<script>window.location.href = "../login-register/verification.php";</script>';
+    exit;
 }
 
-$contactsList = $conn->prepare("SELECT * FROM contacts WHERE userId = :userId");
-$contactsList->bindParam(':userId', $userData['id']);
-$contactsList->execute();
-$contacts = $contactsList->fetchAll();
+$selectHisotry = $conn->prepare("SELECT * FROM loveTesterHistory WHERE userId = :userId ORDER BY createdAt DESC");
+$selectHisotry->bindParam(':userId', $userData['id']);
+$selectHisotry->execute();
+$history = $selectHisotry->fetchAll();
+$historyCount = $selectHisotry->rowCount();
 ?>
 <!DOCTYPE html>
 <html lang="nl">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Valentijn Hackathon</title>
-  <link rel="stylesheet" href="assets/css/styles.css?v=<?php echo filemtime('assets/css/styles.css') ?>">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Valentijn Hackathon - Love Tester</title>
+    <link rel="stylesheet" href="assets/css/chats.css?v=<?php echo filemtime('assets/css/chats.css'); ?>">
+    <link rel="stylesheet" href="assets/css/index.css?v=<?php echo filemtime('assets/css/index.css'); ?>">
+    <link rel="manifest" href="../manifest.json">
 </head>
+
 <body>
-  <div class="container">
+    <header class="nav-bar">
+        <div class="nav-left">
+            <div class="logo">
+                <h1>Valentijn Hackathon</h1>
+            </div>
+        </div>
 
-    <div class="sidebar">
-      <div class="header">
-        <h1>Valentijn Hackathon</h1>
-      </div>
-      <div class="chat-list">
-        <?php
-        foreach($contacts as $contact){
-            $contactData = $conn->prepare("SELECT * FROM users WHERE id = :id");
-            $contactData->bindParam(':id', $contact['contactId']);
-            $contactData->execute();
-            $contactData = $contactData->fetch();
+        <div class="nav-center">
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.php">Love Tester</a></li>
+                <li><a href="chats.php">Chats</a></li>
+            </ul>
+        </div>
 
-            $selectUnreadedMessages = $conn->prepare("SELECT id FROM messages WHERE senderId = :senderId AND receiverId = :receiverId AND readed = 0");
-            $selectUnreadedMessages->bindParam(':senderId', $contactData['id']);
-            $selectUnreadedMessages->bindParam(':receiverId', $userData['id']);
-            $selectUnreadedMessages->execute();
-            $unreadedMessages = $selectUnreadedMessages->rowCount();
+        <div class="nav-right">
+            <button class="menu-toggle">☰</button>
+            <div class="profile-icon">
+                <img src="../uploads/profilePictures/<?php echo $userData['id']; ?>.png" alt="Profiel">
+            </div>
+        </div>
+    </header>
 
-            $lastMessage = $conn->prepare("SELECT id, message, createdAt FROM messages WHERE (senderId = :senderId AND receiverId = :receiverId) OR (senderId = :receiverId AND receiverId = :senderId) ORDER BY createdAt DESC LIMIT 1");
-            $lastMessage->bindParam(':senderId', $contactData['id']);
-            $lastMessage->bindParam(':receiverId', $userData['id']);
-            $lastMessage->execute();
-            $lastMessage = $lastMessage->fetch();
+    <div class="love-tester-wrapper">
+        <div class="love-tester-container">
+            <h2>Love Tester</h2>
 
-            if(!empty($lastMessage['createdAt'])){
-              $utcTime = new DateTime($lastMessage['createdAt'], new DateTimeZone('UTC'));
-              $userTime = $utcTime->setTimezone(new DateTimeZone($deviceData['timezone']));
-              $currentTime = $userTime->format('Y-m-d H:i:s');
-              $lastMessage['createdAt'] = $currentTime;
-            }
+            <div class="love-tester-form">
+                <input type="text" name="name1" class="name1" placeholder="Jouw naam" value="mitchell" />
+                <input type="text" name="name2" class="name2" placeholder="Naam van je Crush" value="mylène" />
+                <button name="test_love" class="test_love">Bereken</button>
+            </div>
 
-            echo '<div class="chat-item" onclick="contacts.onClickContact(this)" data-id="' . $contactData['id'] . '" data-username="' . $contactData['username'] . '">
-            <div class="header">
-                <img src="../uploads/profilePictures/' . $contactData['id'] . '.png" alt="Profiel" class="avatar">
-                <span class="username">' . $contactData['username'] . '</span>';
-                if ($unreadedMessages > 0) {
-                    echo '<span class="unreadedMessages">' . $unreadedMessages . '</span>';
-                }
+            <div class="heart-container">
+                <svg class="heartSvg" viewBox="0 0 100 100">
+                    <defs>
+                        <clipPath id="heartClip">
+                            <rect id="clipRect" x="10" y="90" width="80" height="0"></rect>
+                        </clipPath>
+                    </defs>
 
-                echo '  </div>
-                        <div class="content">
-                            <span class="last-message">' . (!empty($lastMessage['message']) ? $lastMessage['message'] : '') . '</span>
-                        </div>
-                        <div class="footer">
-                            <span class="last-message-time">' . (!empty($lastMessage['createdAt']) ? $lastMessage['createdAt'] : '') . '</span>
-                        </div>
-                      </div>';
+                    <path d="M10,30 A20,20 0 0,1 50,30 A20,20 0 0,1 90,30 Q90,60 50,90 Q10,60 10,30 Z" fill="#FB7F8D" stroke="black" stroke-width="2" />
+                    <path id="redFill" d="M10,30 A20,20 0 0,1 50,30 A20,20 0 0,1 90,30 Q90,60 50,90 Q10,60 10,30 Z" fill="red" stroke="black" stroke-width="2" clip-path="url(#heartClip)" />
+                    <text x="50" y="50" class="percentageText">0%</text>
+                </svg>
+            </div>
 
-        }
-        ?>
-      </div>
-      <div class="sidebar-buttons">
-      <button class="profile">
-          <img src="../uploads/profilePictures/<?php echo $userData['id'] ?>.png" alt="Profiel" class="profile-avatar">
-        </button>
-        <button class="add-user">+ Voeg contact toe</button>
-      </div>
+            <div class="history-container">
+                <h3>Geschiedenis</h3>
+                <ul class="history-list">
+                    <?php
+                    foreach($history as $historyItem){
+                        ?>
+                    <li>
+                        <span><strong><?php echo htmlspecialchars($historyItem['name1']); ?></strong> &amp;
+                            <strong><?php echo htmlspecialchars($historyItem['name2']); ?></strong> -
+                            <?php echo $historyItem['percentage']; ?>%</span>
+                        <button class="share-button">Deel</button>
+                    </li>
+                    <?php
+                    }
+                    ?>
+                </ul>
+                <p class="no-history" style="display:<?php echo $historyCount > 0 ? 'none' : 'block' ?>;">Nog geen
+                    geschiedenis beschikbaar.</p>
+                <button class="clear-history"
+                    style="display:<?php echo $historyCount > 0 ? 'block' : 'none' ?>;">Geschiedenis
+                    Verwijderen</button>
+            </div>
+        </div>
     </div>
 
-    <div class="chat-container">
-      <div class="messages">
-        <div class="message receiver">
-          <div class="bubble">Hoi, hoe gaat het?</div>
+    <div class="share-menu" id="shareMenu">
+        <div class="share-menu-content">
+            <h3>Deel je laatste Love Tester-resultaat</h3>
+            <p id="shareInfoText"></p>
+            <div class="chat-list">
+                <div class="chat-item-share">
+                    <img class="avatar" alt="Profile" src="../uploads/profilePictures/1.png">
+                    <span class="chat-username"><?php echo htmlspecialchars($username); ?></span>
+                    <button onclick="shareToChat(<?php echo $anthorUserId; ?>)">
+                        Deel
+                    </button>
+                </div>
+            </div>
+            <button class="close-menu" onclick="closeShareMenu()">Sluit</button>
         </div>
-        <div class="message sender">
-          <div class="bubble">Goed, met jou?</div>
-        </div>
-      </div>
-      <div class="input-container">
-        <input class="message" type="text" placeholder="Typ een bericht...">
-        <button class="send">Verzenden</button>
-      </div>
     </div>
-  </div>
 
-  <div id="addUserMenu" class="add-user-menu">
-    <h3>Nieuwe contact toevoegen</h3>
-    <input type="text" class="username" placeholder="Gebruikersnaam">
-    <button class="close">Sluit</button>
-    <button class="add-user">Toevoegen</button>
-  </div>
+    <div class="share-menu-overlay" id="shareMenuOverlay" onclick="closeShareMenu()"></div>
 
-  <div id="notification-container"></div>
+    <div id="notification-container"></div>
+    <script>
+    const serviceWorkerVersion = <?php echo filemtime('../service-worker.js') ?>;
+    </script>
+    <script src="assets/js/index.js?v=<?php echo filemtime('assets/js/index.js'); ?>"></script>
 </body>
-<script src="assets/js/main.js?v=<?php echo filemtime('assets/js/main.js') ?>"></script>
+
 </html>
-
-
