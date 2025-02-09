@@ -59,33 +59,4 @@ document.addEventListener('DOMContentLoaded', function () {
             notification('error', "Er is een fout opgetreden. Probeer het later opnieuw.");
         });
     });
-
-    document.querySelector('.logout').addEventListener('click', function () {
-        fetch("assets/php/functions.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                function: "logout"
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Server error: ${response.statusText}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                window.location.href = "../index.php";
-            } else {
-                notification('error', data.error);
-            }
-        })
-        .catch(err => {
-            console.error("Error:", err);
-            notification('error', "Er is een fout opgetreden. Probeer het later opnieuw.");
-        });
-    });
 });

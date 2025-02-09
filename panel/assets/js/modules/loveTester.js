@@ -1,11 +1,4 @@
-let defaultFunctions = null;
 let calculatingLove = false;
-
-async function loadDefaultFunctions() {
-    if (defaultFunctions === null) {
-        defaultFunctions = await import(`../defaultFunctions.js?t=${new Date().getTime()}`);
-    }
-}
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -19,32 +12,32 @@ async function setPercentage(percentage) {
         return;
     }
 
-    if (percentage != 0) {
+    if (percentage !== 0) {
         const p = percentage / 100;
-        const fillHeight = 80 * Math.sqrt(p);
+        const fillHeight = 80 * p; 
         const newY = 90 - fillHeight;
+
         clipRect.setAttribute('y', newY);
         clipRect.setAttribute('height', fillHeight);
 
-        let timeBetweenUpdates = 1000 / percentage;
-
+        const timeBetweenUpdates = 1000 / percentage;
         for (let i = 0; i <= percentage; i++) {
             setTimeout(() => {
                 percentDisplay.textContent = `${i}%`;
             }, timeBetweenUpdates * i);
         }
 
-        document.querySelector(".love-tester-form .test_love").innerHTML = "Liefde wordt berekent...";
+        document.querySelector(".love-tester-form .test_love").innerHTML = "Liefde wordt berekend...";
         await sleep(1000);
+
     } else {
-        const currentPercentage = parseInt(percentDisplay.textContent);
+        const currentPercentage = parseInt(percentDisplay.textContent) || 0;
 
         if (currentPercentage > 0) {
             clipRect.setAttribute('y', 90);
             clipRect.setAttribute('height', 0);
 
             let timeBetweenUpdates = 1000 / currentPercentage;
-
             for (let i = currentPercentage; i >= 0; i--) {
                 setTimeout(() => {
                     percentDisplay.textContent = `${i}%`;
@@ -63,8 +56,6 @@ document.querySelector('.love-tester-form .test_love').addEventListener('click',
     }
     calculatingLove = true;
     try {
-        await loadDefaultFunctions();
-
         const name1 = document.querySelector('.love-tester-form .name1').value;
         const name2 = document.querySelector('.love-tester-form .name2').value;
 
@@ -105,6 +96,7 @@ document.querySelector('.love-tester-form .test_love').addEventListener('click',
             const shareBtn = document.createElement('button');
             shareBtn.classList.add('share-button');
             shareBtn.innerHTML = 'Deel';
+            shareBtn.setAttribute('onclick', `loveTesterShare.shareMenu(${data.historyId})`);
             li.appendChild(shareBtn);
 
             historyUl.prepend(li);
@@ -121,8 +113,6 @@ document.querySelector('.love-tester-form .test_love').addEventListener('click',
 
 document.querySelector('.history-container .clear-history').addEventListener('click', async function () {
     try {
-        await loadDefaultFunctions();
-
         const data = await defaultFunctions.fetchData({
             function: 'clearLoveTesterHistory',
         });

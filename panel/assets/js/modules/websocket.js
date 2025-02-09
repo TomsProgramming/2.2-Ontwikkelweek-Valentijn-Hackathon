@@ -25,6 +25,7 @@ function connectWithWebsocket() {
 
     socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
+
         if (data.function === 'connected') {
         }
 
@@ -32,9 +33,25 @@ function connectWithWebsocket() {
             notifications.show(data.message, data.type);
         }
 
-        if (data.function === 'message' && data.from && data.message) {
-            console.log('new message:', data);
-            chats.addMessage(data.from, data.message);
+        if (data.function === 'message' && data.chatUsername && data.message && (data.self == true || data.self == false) && (data.isLoveTesterResult == true || data.isLoveTesterResult == false) && data.createdAt) {
+            if(typeof chats !== "undefined"){
+                let utcDate = new Date(data.createdAt + 'Z');
+                let localDate = utcDate.toLocaleString(undefined, { 
+                    year: 'numeric', month: '2-digit', day: '2-digit', 
+                    hour: '2-digit', minute: '2-digit', second: '2-digit', 
+                    hour12: false 
+                }).replace(',', '');
+
+                chats.addMessage(data.chatUsername, data.message, data.self, data.isLoveTesterResult, localDate);
+            }else if(data.self === true && data.isLoveTesterResult == true){
+                notifications.show('Je liefdestest resultaat is gedeeld!', 'success');
+            }else if(data.self === false){
+                sounds.newMessage();
+            }
+
+            if(data.self === true){
+                sounds.sendMessage();
+            }
         }
     });
 
@@ -60,6 +77,18 @@ export function sendMessage(message, to) {
             function: 'sendMessage',
             message: message,
             to: to
+        }));
+    } else {
+        console.warn('WebSocket is niet open. Bericht niet verzonden:', message);
+    }
+}
+
+export function sendLoveTesterResult(to, historyId){
+    if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({
+            function: 'sendLoveTesterResult',
+            to: to,
+            historyId: historyId
         }));
     } else {
         console.warn('WebSocket is niet open. Bericht niet verzonden:', message);

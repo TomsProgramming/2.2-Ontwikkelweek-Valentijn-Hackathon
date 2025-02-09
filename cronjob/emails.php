@@ -10,6 +10,9 @@ $selectEmails->execute();
 if ($selectEmails->rowCount() > 0) {
     while ($email = $selectEmails->fetch(PDO::FETCH_ASSOC)) {
         $mail = new PHPMailer(true);
+
+        $currentTime = date('Y-m-d H:i:s');
+
         try {
             $mail->isSMTP();
             $mail->Host       = '';
@@ -29,14 +32,16 @@ if ($selectEmails->rowCount() > 0) {
 
             $mail->send();
             $id = $email['id'];
-            $updateEmail = $conn->prepare("UPDATE emailQueue SET sent = 1 WHERE id = :id");
+            $updateEmail = $conn->prepare("UPDATE emailQueue SET sent = 1, procesTime = :procesTime WHERE id = :id");
             $updateEmail->bindParam(':id', $id, PDO::PARAM_INT);
+            $updateEmail->bindParam(':procesTime', $currentTime, PDO::PARAM_STR);
             $updateEmail->execute();
         } catch (Exception $e) {
             $id = $email['id'];
-            $updateEmail = $conn->prepare("UPDATE emailQueue SET errorMessage = :errorMessage WHERE id = :id");
+            $updateEmail = $conn->prepare("UPDATE emailQueue SET errorMessage = :errorMessage, procesTime = :procesTime WHERE id = :id");
             $updateEmail->bindParam(':errorMessage', $mail->ErrorInfo, PDO::PARAM_STR);
             $updateEmail->bindParam(':id', $id, PDO::PARAM_INT);
+            $updateEmail->bindParam(':procesTime', $currentTime, PDO::PARAM_STR);
             $updateEmail->execute();
         }
     }

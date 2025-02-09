@@ -31,11 +31,11 @@ if($verificationSentStatus === 1){
             <h2 id="form-title">Verificatie</h2>
             <form id="auth-form">
                 <div class="input-group">
-                    <input type="text" id="verificationCode" placeholder="Code" required>
+                    <input type="text" id="verificationCode" placeholder="Code" autocomplete="off" required>
                 </div>
                 <button type="submit" class="btn">Verder</button>
                 <p class="toggle-text">Geen email ontvangen? <a class="resendVerificationCode" id="toggle-form">Verstuur email opnieuw</a></p>
-                <p class="toggle-text"><a class="logout" id="toggle-form">Uitloggen</a></p>
+                <p class="toggle-text"><a href="logout.php" id="toggle-form">Uitloggen</a></p>
             </form>
         </div>
     </div>

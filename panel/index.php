@@ -1,6 +1,8 @@
 <?php
 require '../config.php';
 
+$title = 'Valentijn Hackathon - Love Tester';
+
 if(!$loggedIn){
     echo '<script>window.location.href = "../login-register/login.php";</script>';
     exit;
@@ -21,44 +23,19 @@ $historyCount = $selectHisotry->rowCount();
 <html lang="nl">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Valentijn Hackathon - Love Tester</title>
-    <link rel="stylesheet" href="assets/css/chats.css?v=<?php echo filemtime('assets/css/chats.css'); ?>">
+    <?php include 'includes/head.php'; ?>
     <link rel="stylesheet" href="assets/css/index.css?v=<?php echo filemtime('assets/css/index.css'); ?>">
-    <link rel="manifest" href="../manifest.json">
 </head>
 
-<body>
-    <header class="nav-bar">
-        <div class="nav-left">
-            <div class="logo">
-                <h1>Valentijn Hackathon</h1>
-            </div>
-        </div>
-
-        <div class="nav-center">
-            <ul class="nav-links" id="navLinks">
-                <li><a href="index.php">Love Tester</a></li>
-                <li><a href="chats.php">Chats</a></li>
-            </ul>
-        </div>
-
-        <div class="nav-right">
-            <button class="menu-toggle">☰</button>
-            <div class="profile-icon">
-                <img src="../uploads/profilePictures/<?php echo $userData['id']; ?>.png" alt="Profiel">
-            </div>
-        </div>
-    </header>
-
+<body>    
+    <?php include 'includes/navHeader.php'; ?>
     <div class="love-tester-wrapper">
         <div class="love-tester-container">
             <h2>Love Tester</h2>
 
             <div class="love-tester-form">
-                <input type="text" name="name1" class="name1" placeholder="Jouw naam" value="mitchell" />
-                <input type="text" name="name2" class="name2" placeholder="Naam van je Crush" value="mylène" />
+                <input type="text" name="name1" class="name1" placeholder="Jouw naam" />
+                <input type="text" name="name2" class="name2" placeholder="Naam van je Crush" />
                 <button name="test_love" class="test_love">Bereken</button>
             </div>
 
@@ -83,44 +60,34 @@ $historyCount = $selectHisotry->rowCount();
                     foreach($history as $historyItem){
                         ?>
                     <li>
-                        <span><strong><?php echo htmlspecialchars($historyItem['name1']); ?></strong> &amp;
-                            <strong><?php echo htmlspecialchars($historyItem['name2']); ?></strong> -
-                            <?php echo $historyItem['percentage']; ?>%</span>
-                        <button class="share-button">Deel</button>
+                        <span><strong><?php echo htmlspecialchars($historyItem['name1']); ?></strong> &amp; <strong><?php echo htmlspecialchars($historyItem['name2']); ?></strong> - <?php echo $historyItem['percentage']; ?>%</span>
+                        <button class="share-button" onclick="loveTesterShare.shareMenu(<?php echo $historyItem['id'] ?>)">Deel</button>
                     </li>
                     <?php
                     }
                     ?>
                 </ul>
-                <p class="no-history" style="display:<?php echo $historyCount > 0 ? 'none' : 'block' ?>;">Nog geen
-                    geschiedenis beschikbaar.</p>
-                <button class="clear-history"
-                    style="display:<?php echo $historyCount > 0 ? 'block' : 'none' ?>;">Geschiedenis
-                    Verwijderen</button>
+                <p class="no-history" style="display:<?php echo $historyCount > 0 ? 'none' : 'block' ?>;">Nog geen geschiedenis beschikbaar.</p>
+                <button class="clear-history" style="display:<?php echo $historyCount > 0 ? 'block' : 'none' ?>;">Geschiedenis Verwijderen</button>
             </div>
         </div>
     </div>
 
     <div class="share-menu" id="shareMenu">
         <div class="share-menu-content">
-            <h3>Deel je laatste Love Tester-resultaat</h3>
+            <h3>Deel je Love Tester-resultaat</h3>
             <p id="shareInfoText"></p>
-            <div class="chat-list">
-                <div class="chat-item-share">
-                    <img class="avatar" alt="Profile" src="../uploads/profilePictures/1.png">
-                    <span class="chat-username"><?php echo htmlspecialchars($username); ?></span>
-                    <button onclick="shareToChat(<?php echo $anthorUserId; ?>)">
-                        Deel
-                    </button>
-                </div>
-            </div>
-            <button class="close-menu" onclick="closeShareMenu()">Sluit</button>
+            <div class="chat-list"></div>
+            <button class="close-menu">Sluit</button>
         </div>
     </div>
 
-    <div class="share-menu-overlay" id="shareMenuOverlay" onclick="closeShareMenu()"></div>
+    <div class="share-menu-overlay" id="shareMenuOverlay"></div>
 
     <div id="notification-container"></div>
+
+    <?php include 'includes/videoShowcase.php'; ?>
+
     <script>
     const serviceWorkerVersion = <?php echo filemtime('../service-worker.js') ?>;
     </script>

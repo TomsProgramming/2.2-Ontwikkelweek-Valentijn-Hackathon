@@ -6,8 +6,8 @@ class loveTester
     {
         global $conn, $userData;
 
-        $name1 = strtolower($name1);
-        $name2 = strtolower($name2);
+        $name1 = htmlspecialchars(strtolower($name1), ENT_QUOTES, 'UTF-8');
+        $name2 = htmlspecialchars(strtolower($name2), ENT_QUOTES, 'UTF-8');
 
         $selectLoveTesterCombinations = $conn->prepare("SELECT * FROM loveTesterCombinations WHERE (name1 = :name1 AND name2 = :name2) OR (name1 = :name2 AND name2 = :name1)");
         $selectLoveTesterCombinations->bindParam(':name1', $name1);

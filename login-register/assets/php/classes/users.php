@@ -65,14 +65,24 @@ class users
         if($password == $passwordCopy){
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
+            $safeUsername = htmlspecialchars($username, ENT_QUOTES, 'UTF-8');
+
+            if(empty($safeUsername) || empty($email) || empty($password)){
+                return json_encode(array("success" => false, "error" => "Vul alle velden in"));
+            }
+
+            if (!preg_match('/^[a-zA-Z0-9._-]{3,20}$/', $username)) {
+                return json_encode(array("success" => false, "error" => "Gebruikersnaam moet tussen de 3 en 20 karakters lang zijn en mag alleen letters, cijfers, underscores en streepjes bevatten"));
+            }
+
             $registerUser = $conn->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
-            $registerUser->bindParam(':username', $username);
+            $registerUser->bindParam(':username', $safeUsername);
             $registerUser->bindParam(':email', $email);
             $registerUser->bindParam(':password', $passwordHash);
             $registerUser->execute();
 
             $lastId = $conn->lastInsertId();
-            $avatar = new LetterAvatar($username);
+            $avatar = new LetterAvatar($safeUsername);
             $save = $avatar->saveAs("../../../uploads/profilePictures/$lastId.png");
             self::createDevice($lastId, $timezone);
             return json_encode(array("success" => true));

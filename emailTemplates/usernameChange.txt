@@ -1,0 +1,10 @@
+Lieve,
+
+Wij willen u laten weten dat uw gebruikersnaam succesvol is gewijzigd.
+
+Uw nieuwe gebruikersnaam: {{ newUsername }}
+
+Als u deze wijziging niet heeft aangevraagd, neem dan onmiddellijk contact met ons op via valentijnhackathon@tomtiedemann.com.
+
+Met hartelijke Valentijnsgroeten,  
+Team Valentijn Hackathon

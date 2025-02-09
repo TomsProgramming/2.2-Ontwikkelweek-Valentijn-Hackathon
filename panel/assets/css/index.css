@@ -1,6 +1,15 @@
-@import url('headNav.css?v=1.0.1');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+
     background: linear-gradient(135deg, #f78ca0, #f9748f, #fd868c, #fe9a8b);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
@@ -23,6 +32,8 @@ body {
     border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     padding: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .love-tester-container h2 {
@@ -68,14 +79,14 @@ body {
     margin-bottom: 20px;
 }
 
-.heart-container .heartSvg{
+.heart-container .heartSvg {
     width: 300px;
 }
 
 .heart-container .percentageText {
     text-anchor: middle;
     dominant-baseline: middle;
-    fill: #ffff;
+    fill: #ffffff;
     font-weight: bold;
     font-size: 15px;
 }
@@ -83,6 +94,7 @@ body {
 .heart-container #clipRect {
     transition: y 1s ease, height 1s ease;
 }
+
 
 .result-info {
     text-align: center;
@@ -166,39 +178,6 @@ body {
         margin-top: 20px;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .share-menu {
     display: none; 

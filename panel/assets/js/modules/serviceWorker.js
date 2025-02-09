@@ -1,12 +1,5 @@
 let swRegistration;
-let defaultFunctions = null;
 let isSubscribed = false;
-
-async function loadDefaultFunctions() {
-    if (defaultFunctions === null) {
-        defaultFunctions = await import(`../defaultFunctions.js?t=${new Date().getTime()}`);
-    }
-}
 
 function urlB64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -24,9 +17,16 @@ function urlB64ToUint8Array(base64String) {
 }
 
 export async function subscribeUser() {
-    await loadDefaultFunctions();
-
-    await unsubscribeUser();
+    swRegistration.pushManager.getSubscription()
+        .then(function (subscription) {
+            if (subscription) {
+                return subscription;
+            }
+        })
+        .catch(function (error) {
+            console.log('Error fetching subscription', error);
+        });
+    
     const applicationServerKey = urlB64ToUint8Array('BFskdHv-zYi_7eS7VXDcfEKKZCDMzHeYVjg3uuUhmp5IaLjyUNuQyrZJbkfnjjGYUw99jVbHvu7wC-WcgJaeHe8');
     swRegistration.pushManager.subscribe({
         userVisibleOnly: true,
@@ -41,17 +41,19 @@ export async function subscribeUser() {
                 setNotification: true,
                 subscription: subscription
             }).then(data => {
+                notifications.show('Je bent aangemeld voor notificaties', 'success');
                 if (!data.success) {
                     console.log(`Failed to update the user: ${data.error}`);
                 }
             });
         })
         .catch(function (err) {
+            notifications.show('Er is iets fout gegaan bij het aanmelden voor notificaties', 'error');
             console.log(`Failed to subscribe the user: ${err}`);
         });
 }
 
-export function unsubscribeUser() {
+export async function unsubscribeUser() {
     swRegistration.pushManager.getSubscription()
         .then(function (subscription) {
             if (subscription) {
@@ -62,9 +64,22 @@ export function unsubscribeUser() {
             console.log('Error unsubscribing', error);
         })
         .then(function () {
-            console.log('User is unsubscribed.');
             isSubscribed = false;
+
+            defaultFunctions.fetchData({
+                function: 'updateNotificationData',
+                setNotification: false,
+                subscription: []
+            }).then(data => {
+                if (!data.success) {
+                    console.log(`Failed to update the user: ${data.error}`);
+                }
+            });
         });
+}
+
+export async function checkSubscription() {
+    return isSubscribed;
 }
 
 if ('serviceWorker' in navigator) {
@@ -77,13 +92,37 @@ if ('serviceWorker' in navigator) {
         });
 }
 
-navigator.serviceWorker.ready.then(function (registration) {
+navigator.serviceWorker.ready.then(async function (registration) {
     swRegistration = registration;
     registration.pushManager.getSubscription()
         .then(function (subscription) {
             if (!subscription) {
+                isSubscribed = false;
+
+                defaultFunctions.fetchData({
+                    function: 'updateNotificationData',
+                    setNotification: false,
+                    subscription: []
+                }).then(data => {
+                    if (!data.success) {
+                        console.log(`Failed to update the user: ${data.error}`);
+                    }
+                });
+
                 console.log('User is not subscribed.');
             } else {
+                isSubscribed = true;
+
+                defaultFunctions.fetchData({
+                    function: 'updateNotificationData',
+                    setNotification: true,
+                    subscription: subscription
+                }).then(data => {
+                    if (!data.success) {
+                        console.log(`Failed to update the user: ${data.error}`);
+                    }
+                });
+
                 console.log('User is already subscribed.');
             }
         });

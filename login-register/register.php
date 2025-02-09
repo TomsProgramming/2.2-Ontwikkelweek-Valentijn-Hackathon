@@ -20,16 +20,16 @@ if($loggedIn){
             <h2 id="form-title">Register</h2>
             <form id="auth-form">
                 <div class="input-group">
-                    <input type="text" id="username" placeholder="Gebruikersnaam" required>
+                    <input type="text" id="username" placeholder="Gebruikersnaam" autocomplete="off" required>
                 </div>
                 <div class="input-group">
-                    <input type="email" id="email" placeholder="Email" required>
+                    <input type="email" id="email" placeholder="Email" autocomplete="off" required>
                 </div>
                 <div class="input-group">
-                    <input type="password" id="password" placeholder="Wachtwoord" required>
+                    <input type="password" id="password" placeholder="Wachtwoord" autocomplete="off" required>
                 </div>
                 <div class="input-group">
-                    <input type="password" id="passwordCopy" placeholder="Herhaal Wachtwoord" required>
+                    <input type="password" id="passwordCopy" placeholder="Herhaal Wachtwoord" autocomplete="off" required>
                 </div>
                 <button type="submit" class="btn">Registreer</button>
                 <p class="toggle-text">Al een account? <a href="login.php" id="toggle-form">Login hier</a></p>

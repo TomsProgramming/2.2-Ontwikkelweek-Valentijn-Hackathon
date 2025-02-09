@@ -1,0 +1,84 @@
+<html>
+<head>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #ffe6e6;
+            color: #333;
+        }
+        .container { 
+            max-width: 600px; 
+            margin: auto; 
+            padding: 20px; 
+            border: 2px solid #ff6699; 
+            border-radius: 10px; 
+            background: #fff; 
+            box-shadow: 0 0 10px rgba(255,102,153,0.3);
+        }
+        .header { 
+            background: linear-gradient(45deg, #ff4d4d, #ff99cc);
+            color: white; 
+            padding: 20px; 
+            text-align: center; 
+            border-top-left-radius: 10px; 
+            border-top-right-radius: 10px;
+        }
+        .header h1 { 
+            margin: 0; 
+            font-size: 24px; 
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        .content { 
+            margin: 20px 0; 
+            padding: 0 20px;
+            line-height: 1.6;
+        }
+        .content p {
+            margin: 10px 0;
+        }
+        .info-box { 
+            background-color: #fff0f5; 
+            padding: 15px; 
+            border-radius: 5px; 
+            font-size: 18px; 
+            text-align: center; 
+            border: 1px dashed #ff66a3;
+            margin: 20px 0;
+        }
+        .footer { 
+            background-color: #ffe6f2; 
+            padding: 10px; 
+            text-align: center; 
+            font-size: 12px; 
+            color: #cc3366; 
+            border-bottom-left-radius: 10px; 
+            border-bottom-right-radius: 10px;
+        }
+        .footer a { 
+            color: #cc3366; 
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>❤️ Uw gebruikersnaam is bijgewerkt ❤️</h1>
+        </div>
+        <div class="content">
+            <p>Lieve,</p>
+            <p>Wij willen u laten weten dat uw gebruikersnaam succesvol is gewijzigd.</p>
+            <div class="info-box">
+                Nieuwe gebruikersnaam: <strong>{{ newUsername }}</strong>
+            </div>
+            <p>Als u deze wijziging niet heeft aangevraagd, neem dan onmiddellijk contact met ons op via <a href="mailto:valentijnhackathon@tomtiedemann.com">valentijnhackathon@tomtiedemann.com</a>.</p>
+            <p>Met hartelijke Valentijnsgroeten,<br>Team Valentijn Hackathon</p>
+        </div>
+        <div class="footer">
+            <p>&copy; {{ yearDate }} Valentijn Hackathon. Alle rechten voorbehouden.</p>
+            <p>Bezoek ons op <a href="https://valentijnhackathon.tomtiedemann.com/">Valentijn Hackathon</a></p>
+            <p><a href="mailto:valentijnhackathon@tomtiedemann.com">valentijnhackathon@tomtiedemann.com</a></p>
+        </div>
+    </div>
+</body>
+</html>

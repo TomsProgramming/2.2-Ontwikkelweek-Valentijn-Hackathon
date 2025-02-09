@@ -1,0 +1,158 @@
+.nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffe6e6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    z-index: 999;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.nav-left,
+.nav-center,
+.nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.logo h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-family: Lucida Handwriting, Brush Script MT, cursive;
+    color: #d6336c;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: #d6336c;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+    color: #bf2952;
+}
+
+.profile-menu-container {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-icon img {
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+}
+
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 110%;
+    background-color: #ffe6e6;
+    min-width: 180px;
+    border: 1px solid #fbb6ce;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    z-index: 9999;
+}
+
+.profile-dropdown.show {
+    display: block;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0; 
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1; 
+        transform: translateY(0);
+    }
+}
+
+.profile-dropdown li a {
+    display: block;
+    color: #d6336c;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.profile-dropdown li a:hover {
+    background-color: #ffd6da;
+}
+
+.menu-toggle {
+    display: none;
+    background: #d6336c;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+@media (max-width: 768px) {
+    .nav-bar {
+        padding: 10px;
+    }
+
+    .menu-toggle {
+        display: block;
+        margin-right: 20px;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background-color: #ffe6e6;
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px 0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-links li {
+        text-align: center;
+    }
+
+    .nav-links.show {
+        display: flex;
+    }
+
+    .profile-icon {
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 375px) {
+    .logo h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: #d6336c;
+    }
+}
